@@ -1,0 +1,1 @@
+find . -name "*.sh" | xargs dos2unix

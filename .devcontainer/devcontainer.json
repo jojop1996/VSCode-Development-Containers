@@ -1,0 +1,15 @@
+{
+    "build": {"dockerfile": "Dockerfile"},
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "redhat.ansible",
+                "shakram02.bash-beautify"
+            ],
+            "settings": {
+                "git.enabled": true
+            }
+        }
+    },
+    "postCreateCommand": ""
+}
