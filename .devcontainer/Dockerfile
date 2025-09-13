@@ -1,4 +1,4 @@
-FROM 
+FROM ubuntu:jammy
 
 ## This is a devcontainer I use to perform general tasks
 ## It includes a variety of tools and settings for testing different applications and automations
@@ -39,17 +39,3 @@ RUN apt install locales
 RUN export LC_ALL=en_US.UTF-8
 RUN export LANG=en_US.UTF-8
 RUN locale-gen en_US.UTF-8
-
-# Set environment variables
-ENV JAVA_HOME=/apps/products/jdk/jdk-17.0.14
-ENV PATH=$JAVA_HOME/bin:$PATH
-ENV _JAVA_OPTIONS="-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts"
-
-# Create the target directory
-RUN mkdir -p /apps/products/jdk && chmod 0755 /apps/products/jdk
-
-# Copy the JDK tarball into the image
-COPY ./java/jdk-17.0.14_linux-x64_bin.tar.gz /tmp/jdk.tar.gz
-
-# Extract the tarball to the target directory
-RUN tar -xzf /tmp/jdk.tar.gz -C /apps/products/jdk/ && rm /tmp/jdk.tar.gz
