@@ -14,6 +14,7 @@ RUN apt-get update && \
     apt-get install -y \
         wget gpg
 
+# Download and add HashiCorp GPG key for apt repository
 RUN wget -O - https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
 
@@ -21,8 +22,15 @@ RUN wget -O - https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/sha
 RUN apt-get update && \
     apt-get install -y \
         nano iputils-ping dnsutils xz-utils python3-pip dos2unix net-tools telnet maven \
-        krb5-user libkrb5-dev sshpass locales terraform packer && \
+        krb5-user libkrb5-dev sshpass locales terraform packer software-properties-common && \
     locale-gen en_US.UTF-8
+
+# Install Go and hcl format tool
+RUN add-apt-repository ppa:longsleep/golang-backports && \
+    apt update && \
+    apt install -y golang-go && \ 
+    echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc && \
+    go install github.com/haggishunk/hclfmt@latest
 
 # Install Python packages
 RUN pip install ansible pywinrm ansible-lint pywinrm[kerberos] hvac
